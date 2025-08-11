@@ -14,7 +14,7 @@ setup(
     },
     author="Kappa707-Dev",
     author_email="kappa707@proton.me",
-    description="Aplicación GTK4 con libadwaita escrita en Python",
+    description="Generador de contraseñas con GTK4 y libadwaita"",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/Kappa707-Dev/kappassgen",
