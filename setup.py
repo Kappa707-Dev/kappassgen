@@ -1,0 +1,29 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="kappassgen",
+    version="0.1",
+    packages=find_packages(),
+    install_requires=[
+        "PyGObject",
+    ],
+    entry_points={
+        "console_scripts": [
+            "kappassgen = kappassgen.main:main",
+        ],
+    },
+    author="Kappa707-Dev",
+    author_email="kappa707@proton.me",
+    description="Aplicación GTK4 con libadwaita escrita en Python",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/Kappa707-Dev/kappassgen",
+    license="MIT",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Environment :: X11 Applications :: GTK",
+        "Operating System :: POSIX :: Linux",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    python_requires=">=3.8",
+)
