@@ -2,14 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name="kappassgen",
-    version="0.5.3",
-    packages=["kappassgen"],
+    version="0.5.4",
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
     install_requires=[
         "PyGObject",
     ],
     entry_points={
         "console_scripts": [
-            "kappassgen = kappassgen.main:main",
+            "kappassgen = com.kappa707.KappassGen.main:main",
         ],
     },
     author="Kappa707-Dev",
