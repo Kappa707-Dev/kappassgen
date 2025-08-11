@@ -27,12 +27,12 @@ cd kappassgen
 
 (Opcional) Crea y activa un entorno virtual de Python:
 
-python3 -m venv venv
-source venv/bin/activate
+   python3 -m venv venv
+   source venv/bin/activate
 
 Instala las dependencias necesarias (por ejemplo, PyGObject para GTK):
 
-pip install PyGObject
+   pip install PyGObject
 
 Ejecuta el programa:
 
@@ -40,13 +40,13 @@ Ejecuta el programa:
 
 Uso
 
-    Selecciona la opción para generar una contraseña o una passphrase.
+Selecciona la opción para generar una contraseña o una passphrase.
 
-    Ajusta las opciones según tus necesidades.
+Ajusta las opciones según tus necesidades.
 
-    Haz clic en el botón para generar.
+Haz clic en el botón para generar.
 
-    Usa el botón copiar para llevar la contraseña al portapapeles.
+Usa el botón copiar para llevar la contraseña al portapapeles.
 
 Contribuciones
 
