@@ -465,3 +465,11 @@ class App(Adw.Application):
 if __name__ == "__main__":
     app = App()
     app.run(sys.argv)
+
+    def main():
+    import sys
+    app = App()
+    app.run(sys.argv)
+
+if __name__ == "__main__":
+    main()
