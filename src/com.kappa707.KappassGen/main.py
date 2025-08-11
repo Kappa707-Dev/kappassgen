@@ -454,6 +454,7 @@ class MainWindow(Adw.ApplicationWindow):
         provider = Gdk.ContentProvider.new_for_value(text)
         clipboard.set_content(provider)
 
+
 class App(Adw.Application):
     def __init__(self):
         super().__init__(application_id="com.kappa707.KappassGen", flags=Gio.ApplicationFlags.FLAGS_NONE)
@@ -462,12 +463,7 @@ class App(Adw.Application):
         win = MainWindow(self)
         win.present()
 
-if __name__ == "__main__":
-    app = App()
-    app.run(sys.argv)
-
-    def main():
-    import sys
+def main():
     app = App()
     app.run(sys.argv)
 
