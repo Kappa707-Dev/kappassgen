@@ -21,38 +21,42 @@ KappassGen es una herramienta sencilla para crear contraseñas y passphrases seg
    ```bash
    git clone https://github.com/Kappa707-Dev/kappassgen.git
 
-Navega al directorio del proyecto:
+2. Navega al directorio del proyecto:
 
+   ```bash
    cd kappassgen
 
-(Opcional) Crea y activa un entorno virtual de Python:
+3. (Opcional) Crea y activa un entorno virtual de Python:
 
+   ```bash
    python3 -m venv venv
    source venv/bin/activate
 
-Instala las dependencias necesarias (por ejemplo, PyGObject para GTK):
+4. Instala las dependencias necesarias (por ejemplo, PyGObject para GTK):
 
+   ```bash
    pip install PyGObject
 
-Ejecuta el programa:
+5. Ejecuta el programa:
 
+   ```bash
     python3 src/com.kappa707.KappassGen/main.py
 
-Uso
+## Uso
 
-Selecciona la opción para generar una contraseña o una passphrase.
+- Selecciona la opción para generar una contraseña o una passphrase.
 
-Ajusta las opciones según tus necesidades.
+- Ajusta las opciones según tus necesidades.
 
-Haz clic en el botón para generar.
+- Haz clic en el botón para generar.
 
-Usa el botón copiar para llevar la contraseña al portapapeles.
+- Usa el botón copiar para llevar la contraseña al portapapeles.
 
-Contribuciones
+## Contribuciones
 
 Las contribuciones son bienvenidas. Por favor abre un issue o un pull request para mejorar el proyecto.
 
-Licencia
+## Licencia
 
 Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
