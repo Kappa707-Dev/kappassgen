@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="kappassgen",
-    version="0.1",
-    packages=find_packages(),
+    version="0.5.3",
+    packages=["kappassgen"],
     install_requires=[
         "PyGObject",
     ],
