@@ -10,13 +10,13 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "kappassgen = com.kappa707.KappassGen.main:main",
+            "kappassgen = main:main",  # Ahora apunta a src/main.py
         ],
     },
     author="Kappa707-Dev",
     author_email="kappa707@proton.me",
     description="Generador de contraseñas con GTK4 y libadwaita",
-    long_description=open("README.md").read(),
+    long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/Kappa707-Dev/kappassgen",
     license="MIT",
@@ -28,3 +28,4 @@ setup(
     ],
     python_requires=">=3.8",
 )
+
