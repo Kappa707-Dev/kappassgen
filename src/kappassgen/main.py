@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 import sys
-import random
+import secrets
 import gi
 import html
+import os
+
+import importlib.resources
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -11,118 +14,30 @@ from gi.repository import Gio, Gtk, Adw, Gdk
 
 Adw.init()
 
-WORDS = [
-    "sol","luna","estrella","mar","cielo","arena","montaña","río","bosque","flor",
-    "hoja","raíz","piedra","nieve","viento","fuego","tierra","nube","lluvia","trueno",
-    "campo","valle","isla","roca","canto","pez","ave","animal","fruta","casa",
-    "puerta","camino","lago","nido","vaca","gato","perro","pan","queso","vino",
-    "leche","sal","hierba","barco","luz","sombra","rayo","árbol","miel","hojas",
-    "amor","vida","muerte","tiempo","agua","sol","estrella","luz","oscuro","claro",
-    "noche","día","ventana","silla","mesa","libro","pluma","voz","silencio","ruido",
-    "canción","danza","risa","llanto","corazón","alma","mente","sueño","realidad","fantasía",
-    "camino","puente","montaña","valle","bosque","pradera","desierto","ciudad","pueblo","aldea",
-    "plaza","calle","carretera","tren","avión","barco","auto","bicicleta","rueda","motor",
-    "puente","torre","castillo","iglesia","escuela","hospital","mercado","tienda","casa","hogar",
-    "amigo","enemigo","hermano","hermana","padre","madre","hijo","hija","abuelo","abuela",
-    "niño","niña","joven","adulto","anciano","persona","gente","multitud","silencio","grito",
-    "lluvia","nieve","tormenta","viento","calor","frío","fuego","agua","tierra","aire",
-    "montaña","colina","valle","lago","río","mar","océano","playa","arena","roca",
-    "árbol","hoja","flor","raíz","fruto","semilla","planta","hierba","césped","bosque",
-    "animal","perro","gato","pájaro","pez","caballo","vaca","oveja","cerdo","león",
-    "tigre","elefante","mono","ratón","serpiente","araña","mariposa","abeja","mosca","culebra",
-    "cielo","estrella","sol","luna","nube","tormenta","trueno","relámpago","lluvia","viento",
-    "fuego","ceniza","humo","luz","sombra","color","rojo","azul","verde","amarillo",
-    "blanco","negro","gris","morado","naranja","rosa","marrón","oro","plata","bronce",
-    "día","noche","mañana","tarde","hora","minuto","segundo","semana","mes",
-    "año","siglo","mil","eternidad","momento","instante","pasado","presente","futuro","destino",
-    "caminar","correr","saltar","volar","nadar","caer","levantar","sentar","parar","andar",
-    "hablar","callar","escuchar","mirar","ver","tocar","oler","gustar","amar","odiar",
-    "trabajar","descansar","dormir","soñar","despertar","pensar","crear","romper","hacer","vivir",
-    "morir","nacer","crecer","cambiar","transformar","encontrar","perder","buscar","guardar","mostrar",
-    "abrir","cerrar","entrar","salir","subir","bajar","llegar","partir","quedar","cambiar",
-    "comer","beber","cocinar","comprar","vender","pagar","recibir","dar","tomar","traer",
-    "leer","escribir","dibujar","pintar","cantar","bailar","jugar","reír","llorar","sonreír",
-    "feliz","triste","enojado","calmado","temeroso","valiente","fuerte","débil","grande","pequeño",
-    "alto","bajo","ancho","estrecho","largo","corto","nuevo","viejo","joven","anciano",
-    "bonito","feo","bueno","malo","rico","pobre","fácil","difícil","rápido","lento",
-    "claro","oscuro","frío","caliente","dulce","amargo","salado","ácido","suave","duro",
-    "ligero","pesado","vacío","lleno","seco","mojado","limpio","sucio","fresco","caliente",
-    "mañana","tarde","noche","día","semana","mes","año","siglo","momento","eternidad",
-    "familia","amigos","compañeros","vecinos","extraños","gente","pueblo","ciudad","país","mundo",
-    "amor","odio","amistad","respeto","confianza","mentira","verdad","esperanza","miedo","alegría",
-    "tristeza","dolor","placer","sueño","despierto","realidad","fantasía","libertad","esclavitud","paz",
-    "guerra","batalla","conflicto","victoria","derrota","justicia","injusticia","ley","orden",
-    "caos","vida","muerte","nacer","morir","crecer","aprender","enseñar","conocer","olvidar",
-    "recordar","pensar","sentir","amar","odiar","vivir","soñar","despertar","cantar","bailar",
-    "leer","escribir","dibujar","pintar","correr","caminar","nadar","volar","caer","levantar",
-    "sentar","parar","andar","hablar","callar","escuchar","mirar","ver","tocar","oler",
-    "gustar","trabajar","descansar","dormir","soñar","despertar","pensar","crear","romper",
-    "hacer","vivir","morir","nacer","crecer","cambiar","transformar","encontrar","perder","buscar",
-    "guardar","mostrar","abrir","cerrar","entrar","salir","subir","bajar","llegar","partir",
-    "quedar","cambiar","comer","beber","cocinar","comprar","vender","pagar","recibir","dar",
-    "tomar","traer","leer","escribir","dibujar","pintar","cantar","bailar","jugar","reír",
-    "llorar","sonreír","feliz","triste","enojado","calmado","temeroso","valiente","fuerte","débil",
-    "grande","pequeño","alto","bajo","ancho","estrecho","largo","corto","nuevo","viejo",
-    "joven","anciano","bonito","feo","bueno","malo","rico","pobre","fácil","difícil",
-    "rápido","lento","claro","oscuro","frío","caliente","dulce","amargo","salado","ácido",
-    "suave","duro","ligero","pesado","vacío","lleno","seco","mojado","limpio","sucio",
-    "fresco","caliente","mañana","tarde","noche","día","semana","mes","año","siglo",
-    "momento","eternidad","familia","amigos","compañeros","vecinos","extraños","gente","pueblo","ciudad",
-    "país","mundo","amor","odio","amistad","respeto","confianza","mentira","verdad","esperanza","miedo",
-    "alegría","tristeza","dolor","placer","sueño","despierto","realidad","fantasía","libertad","esclavitud",
-    "paz","guerra","batalla","conflicto","victoria","derrota","justicia","injusticia","ley",
-    "orden","caos","vida","muerte","nacer","morir","crecer","aprender","enseñar","conocer",
-    "olvidar","recordar","pensar","sentir","amar","odiar","vivir","morir","soñar","despertar",
-    "cantar","bailar","leer","escribir","dibujar","pintar","correr","caminar","nadar","volar",
-    "caer","levantar","sentar","parar","andar","hablar","callar","escuchar","mirar","ver",
-    "tocar","oler","gustar","trabajar","descansar","dormir","soñar","despertar","pensar","crear",
-    "romper","hacer","vivir","morir","nacer","crecer","cambiar","transformar","encontrar","perder",
-    "buscar","guardar","mostrar","abrir","cerrar","entrar","salir","subir","bajar","llegar",
-    "partir","quedar","cambiar","comer","beber","cocinar","comprar","vender","pagar","recibir",
-    "dar","tomar","traer","leer","escribir","dibujar","pintar","cantar","bailar","jugar",
-    "reír","llorar","sonreír","feliz","triste","enojado","calmado","temeroso","valiente","fuerte",
-    "débil","grande","pequeño","alto","bajo","ancho","estrecho","largo","corto","nuevo",
-    "viejo","joven","anciano","bonito","feo","bueno","malo","rico","pobre","fácil",
-    "difícil","rápido","lento","claro","oscuro","frío","caliente","dulce","amargo","salado",
-    "ácido","suave","duro","ligero","pesado","vacío","lleno","seco","mojado","limpio",
-    "sucio","fresco","caliente","mañana","tarde","noche","día","semana","mes","año",
-    "siglo","momento","eternidad","familia","amigos","compañeros","vecinos","extraños","gente",
-    "pueblo","ciudad","país","mundo","amor","odio","amistad","respeto","confianza","mentira",
-    "verdad","esperanza","miedo","alegría","tristeza","dolor","placer","sueño","despierto","realidad",
-    "fantasía","libertad","esclavitud","paz","guerra","batalla","conflicto","victoria","derrota",
-    "justicia","injusticia","ley","orden","caos","vida","muerte","nacer","morir","crecer",
-    "aprender","enseñar","conocer","olvidar","recordar","pensar","sentir","amar","odiar","vivir",
-    "morir","soñar","despertar","cantar","bailar","leer","escribir","dibujar","pintar","correr",
-    "caminar","nadar","volar","caer","levantar","sentar","parar","andar","hablar","callar",
-    "escuchar","mirar","ver","tocar","oler","gustar","trabajar","descansar","dormir","soñar",
-    "despertar","pensar","crear","romper","hacer","vivir","morir","nacer","crecer","cambiar",
-    "transformar","encontrar","perder","buscar","guardar","mostrar","abrir","cerrar","entrar","salir",
-    "subir","bajar","llegar","partir","quedar","cambiar","comer","beber","cocinar","comprar",
-    "vender","pagar","recibir","dar","tomar","traer","leer","escribir","dibujar","pintar",
-    "cantar","bailar","jugar","reír","llorar","sonreír","feliz","triste","enojado","calmado",
-    "temeroso","valiente","fuerte","débil","grande","pequeño","alto","bajo","ancho","estrecho",
-    "largo","corto","nuevo","viejo","joven","anciano","bonito","feo","bueno","malo",
-    "rico","pobre","fácil","difícil","rápido","lento","claro","oscuro","frío","caliente",
-    "dulce","amargo","salado","ácido","suave","duro","ligero","pesado","vacío","lleno",
-    "seco","mojado","limpio","sucio","fresco","caliente","mañana","tarde","noche","día",
-    "semana","mes","año","siglo","momento","eternidad","familia","amigos","compañeros","vecinos",
-    "extraños","gente","pueblo","ciudad","país","mundo","amor","odio","amistad","respeto",
-    "confianza","mentira","verdad","esperanza","miedo","alegría","tristeza","dolor","placer","sueño",
-    "ciudad","pueblo","aldea","calle","avenida","plaza","parque","jardín","edificio","torre",
-    "castillo","palacio","iglesia","templo","catedral","puente","monumento","fuente","museo","biblioteca",
-    "escuela","universidad","hospital","clínica","mercado","tienda","supermercado","restaurante","café","bar",
-    "hotel","teatro","cine","estadio","cancha","campo","playa","montaña","valle","bosque",
-    "selva","desierto","isla","península","continente","país","región","provincia","departamento","estado",
-    "capital","frontera","río","lago","océano","mar","cascada","manantial","pantano","glaciar",
-    "volcán","cueva","túnel","puente","carretera","camino","sendero","puerto","aeropuerto","estación",
-    "tren","metro","autobús","taxi","auto","bicicleta","moto","barco","avión","helicóptero",
-    "cohete","satélite","planeta","tierra","marte","venus","júpiter","saturno","urano","neptuno",
-    "sol","luna"
-]
+# --- Carga de WORDS usando importlib.resources ---
+try:
+    WORDS_PATH = importlib.resources.files("kappassgen").joinpath("data/words.txt")
+    with WORDS_PATH.open("r", encoding="utf-8") as f:
+        WORDS = [line.strip() for line in f if line.strip()]
+except AttributeError:
+    # Método alternativo para versiones anteriores
+    import pkg_resources
+    WORDS_PATH = pkg_resources.resource_filename("kappassgen", "data/words.txt")
+    with open(WORDS_PATH, "r", encoding="utf-8") as f:
+        WORDS = [line.strip() for line in f if line.strip()]
+except Exception:
+    # Fallback para desarrollo local, carga relativa al script
+    HERE = os.path.dirname(os.path.abspath(__file__))
+    fallback_path = os.path.join(HERE, 'data', 'words.txt')
+    with open(fallback_path, 'r', encoding='utf-8') as f:
+        WORDS = [line.strip() for line in f if line.strip()]
+
+
 if len(WORDS) < 1000:
     while len(WORDS) < 1000:
         WORDS += WORDS
     WORDS = WORDS[:1000]
+
 
 def colorize_markup(text):
     out = []
@@ -386,7 +301,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.strength_label.set_text("")
             return
 
-        pw = "".join(random.choice(pool) for _ in range(length))
+        pw = "".join(secrets.choice(pool) for _ in range(length))
         escaped_pw = html.escape(pw)
         self.password_label.set_markup(colorize_markup(escaped_pw))
         self._update_strength(pw)
@@ -398,19 +313,20 @@ class MainWindow(Adw.ApplicationWindow):
         use_nums = bool(self.sw_pp_numbers.get_active())
 
         sep = "-" if use_sep else ""
-        selected = random.choices(WORDS, k=words_n)
+        selected = secrets.choice(WORDS) if words_n == 1 else [secrets.choice(WORDS) for _ in range(words_n)]
+
         if use_caps:
             selected = [w.capitalize() for w in selected]
 
         if use_nums:
-            digits = random.choices("0123456789", k=random.randint(1, 2))
+            digits = [secrets.choice("0123456789") for _ in range(secrets.choice([1, 2]))]
             interleaved = []
             for i, word in enumerate(selected):
                 interleaved.append(word)
                 if i < len(selected) - 1:
                     interleaved.append(None)
             possible_positions = [0] + [i for i, v in enumerate(interleaved) if v is None] + [len(interleaved)]
-            insert_positions = random.sample(possible_positions, k=len(digits))
+            insert_positions = secrets.SystemRandom().sample(possible_positions, k=len(digits))
             insert_positions.sort()
             result = []
             idx_digit = 0
@@ -469,3 +385,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

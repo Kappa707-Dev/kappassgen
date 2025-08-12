@@ -1,0 +1,13 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+src/kappassgen/__init__.py
+src/kappassgen/main.py
+src/kappassgen.egg-info/PKG-INFO
+src/kappassgen.egg-info/SOURCES.txt
+src/kappassgen.egg-info/dependency_links.txt
+src/kappassgen.egg-info/entry_points.txt
+src/kappassgen.egg-info/requires.txt
+src/kappassgen.egg-info/top_level.txt
+src/kappassgen/data/words.txt

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="kappassgen",
-    version="0.5.4",
+    version="0.5.6",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     install_requires=[
@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "kappassgen = main:main",  # Ahora apunta a src/main.py
+            "kappassgen = kappassgen.main:main",
         ],
     },
     author="Kappa707-Dev",
@@ -27,5 +27,9 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     python_requires=">=3.8",
+    include_package_data=True,
+    package_data={
+        "kappassgen": ["data/*.txt"],
+    },
 )
 
